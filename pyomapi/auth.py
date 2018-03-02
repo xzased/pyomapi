@@ -44,7 +44,9 @@ class HMACMD5Authenticator:
         :param message: OMAPIMessage 
         :return: HMAC signature
         """
-        return hmac.HMAC(self.key, message).digest()
+        signature = hmac.HMAC(self.key, message).digest()
+        print("SIGNING MESSAGE:", message, "WITH KEY:", self.key, "SIGNATURE:", signature)
+        return signature
 
     def to_dict(self):
         """

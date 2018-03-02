@@ -14,8 +14,8 @@
 #    limitations under the License.
 
 import socket
-
-import msgpack
+import struct
+import io
 
 from pyomapi.exceptions import OMAPIException
 
@@ -30,20 +30,20 @@ class OMAPITransport:
         self.host = host
         self.port = port
         self.timeout = timeout
-        self.connection = None
-        self.initialize_connection()
-        self.send_startup_message()
-
-    def initialize_connection(self):
         self.connection = socket.socket()
         self.connection.settimeout(self.timeout)
         self.connection.connect((self.host, self.port))
+        self.send_start_message()
 
-    def send_startup_message(self):
-        message = msgpack.packb([self.PROTOCOL_VERSION, self.HEADER_SIZE],
-                                use_bin_type=True)
-        self.write(message)
-        protocol_version, header_size = self.read()
+    def send_start_message(self):
+        message = io.BytesIO()
+        message.write(struct.pack('!L', self.PROTOCOL_VERSION))
+        message.write(struct.pack('!L', self.HEADER_SIZE))
+
+        self.write(message.getvalue())
+        response = self.read()
+
+        protocol_version, header_size = struct.unpack('>ii', response)
 
         if protocol_version != self.PROTOCOL_VERSION:
             raise OMAPIException('Protocol mismatch')
@@ -74,7 +74,8 @@ class OMAPITransport:
         if not data:
             self.close()
             raise OMAPIException("connection closed")
-        return msgpack.unpackb(data, raw=False)
+
+        return data
 
     def write(self, data):
         """
