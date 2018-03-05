@@ -9,7 +9,7 @@ Besides basic ready to use operations, custom interaction can be implemented wit
 
 ## Getting Started
 
-# Server side configugration for ISC DHCP3
+# Server side configuration for ISC DHCP3
 
 To allow a OMAPI access to your ISC DHCP3 DHCP Server you should define the following in your dhcpd.conf config file:
 
