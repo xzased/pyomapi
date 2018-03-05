@@ -7,9 +7,9 @@ pyomapi is a Python implementation of the DHCP OMAPI protocol used in the most p
 It can be used to query and modify leases and other objects exported by an ISC DHCP server. The interaction can be authenticated using HMAC-MD5.
 Besides basic ready to use operations, custom interaction can be implemented with limited effort.
 
-## Getting Started
+# Getting Started
 
-# Server side configuration for ISC DHCP3
+## Server side configuration for ISC DHCP3
 
 To allow a OMAPI access to your ISC DHCP3 DHCP Server you should define the following in your dhcpd.conf config file:
 
@@ -32,13 +32,13 @@ To generate a key use the following command:
 tsig-keygen -a HMAC-MD5 defomapi
 ```
 
-### Installing
+## Installing
 
 ```
 pip install pyomapi
 ```
 
-# Example OMAPI lookup
+## Example OMAPI lookup
 
 ```
 import pyomapi
