@@ -14,6 +14,7 @@
 #    limitations under the License.
 
 import secrets
+import hmac
 import struct
 import io
 
@@ -113,7 +114,7 @@ class OMAPIMessage:
 
     def verify(self, authenticator):
         signature = authenticator.sign(self.consume(for_signature=True))
-        return signature == self.signature
+        return hmac.compare_digest(signature, self.signature)
 
     def is_response(self, message):
         return self.response_id == message.transmission_id

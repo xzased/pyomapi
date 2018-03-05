@@ -23,8 +23,8 @@ setup(
     license='',
     author='Ruben Quinones',
     author_email='ruben.quinones@rackspace.com',
-    description='ISC DHCP OMAPI protocol implementation in Python',
+    description='ISC DHCP OMAPI python client',
     install_requires=[
-        'msgpack-python',
+        'pytest',
     ]
 )

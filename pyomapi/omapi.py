@@ -164,31 +164,34 @@ class OMAPI:
         msg.obj.append((b'hardware-type', struct.pack('!I', 1)))
         msg.obj.append((b'ip-address', utils.pack_ip_address(ip)))
         msg.obj.append((b'name', name.encode('utf-8')))
-        msg.obj.append((b'statements', 'supersede host-name '{0}';'.format(name).encode('utf-8')))
+        msg.obj.append((b'statements', 'supersede host-name "{0}";'.format(name).encode('utf-8')))
         response = self.query_server(msg)
         if response.opcode != OMAPIMessage.OMAPI_OP_UPDATE:
             raise OMAPIException('add failed')
 
     def add_host_without_ip(self, mac_address):
-        message_items = [
+        message_data = [
             (b'create', struct.pack('!I', 1)),
             (b'exclusive', struct.pack('!I', 1))
         ]
-        message_obj = [
+        obj_data = [
             (b'hardware-address', utils.pack_mac_address(mac_address)),
             (b'hardware-type', struct.pack('!I', 1))
         ]
         message = OMAPIMessage.open(b'host')
-        message.message.extend(message_items)
-        message.obj.extend(message_obj)
+        message.message.extend(message_data)
+        message.obj.extend(obj_data)
         response = self.query_server(message)
         if response.opcode != OMAPIMessage.OMAPI_OP_UPDATE:
-            raise OMAPIException('Failed to add host '{}''.format(mac_address))
+            raise OMAPIException('Failed to add host {}'.format(mac_address))
 
     def lookup_hostname(self, ip):
-        msg = OMAPIMessage.open(b'lease')
-        msg.obj.append((b'ip-address', utils.pack_ip_address(ip)))
-        response = self.query_server(msg)
+        obj_data = [
+            (b'ip-address', utils.pack_ip_address(ip))
+        ]
+        message = OMAPIMessage.open(b'lease')
+        message.obj.extend(obj_data)
+        response = self.query_server(message)
         if response.opcode != OMAPIMessage.OMAPI_OP_UPDATE:
             raise ObjectNotFound()
         try:

@@ -45,7 +45,6 @@ class HMACMD5Authenticator:
         :return: HMAC signature
         """
         signature = hmac.HMAC(self.key, message).digest()
-        print("SIGNING MESSAGE:", message, "WITH KEY:", self.key, "SIGNATURE:", signature)
         return signature
 
     def to_dict(self):

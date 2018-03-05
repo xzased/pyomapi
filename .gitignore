@@ -66,3 +66,5 @@ target/
 # MAC OSx
 .DS_Store
 
+# Pytest
+.pytest_cache
